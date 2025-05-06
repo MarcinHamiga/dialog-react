@@ -1,13 +1,13 @@
 import Navbar from "../Navbar/Navbar.tsx";
 import SpeakersList from "../SpeakersList/SpeakersList.tsx";
-import {useProject} from "../ProjectContext/ProjectContext.tsx";
 import {useNavigate} from "react-router-dom";
+import {useProject} from "../ProjectContext/ProjectContext.tsx";
 import {useEffect, useState} from "react";
 
-const ProjectDashboard =  () => {
+const SpeakersPanel = () => {
     const navigate = useNavigate();
     const { projectId } = useProject();
-    const [ isLoading, setIsLoading ] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
         if (!projectId) {
@@ -15,21 +15,20 @@ const ProjectDashboard =  () => {
         } else {
             setIsLoading(false);
         }
-    }, [projectId, navigate])
+    })
 
-    if (isLoading) return (<></>);
-
+    if (isLoading) return (<> </>)
     return (
-        <div id="dashboard" className="h-screen flex flex-row">
-            <Navbar />
+        <div id="speakers" className={"flex flex-row h-screen"}>
+            <Navbar/>
             <SpeakersList
-                previous={"dashboard"}
-                canHide={true}
-                limited={true}
-                noAddButton={true}
+                previous={'speaker'}
+                canHide={false}
+                limited={false}
+                noAddButton={false}
             />
         </div>
     )
 }
 
-export default ProjectDashboard;
+export default SpeakersPanel;

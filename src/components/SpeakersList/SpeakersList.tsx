@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-import { DashboardParams } from "../../interfaces/IDashboardParams.ts";
-import { useParams } from "react-router-dom";
 import axios, { AxiosError, isAxiosError } from 'axios';
 import { ISpeaker } from "../../interfaces/ISpeaker.ts";
 import SpeakerCard from "../SpeakerCard/SpeakerCard.tsx";
 import NewSpeakerCard from "../NewSpeakerCard/NewSpeakerCard.tsx";
+import {useProject} from "../ProjectContext/ProjectContext.tsx";
 
 type SpeakersListProps = {
     previous: "dashboard" | "speaker";
@@ -14,7 +13,7 @@ type SpeakersListProps = {
 }
 
 const SpeakersList = ({previous, canHide, limited, noAddButton}: SpeakersListProps) => {
-    const params = useParams<DashboardParams>();
+    const { projectId } = useProject();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<AxiosError | Error | null>(null);
     const [speakers, setSpeakers] = useState<ISpeaker[]>([]);
@@ -22,14 +21,14 @@ const SpeakersList = ({previous, canHide, limited, noAddButton}: SpeakersListPro
 
     const fetchSpeakers = useCallback(async () => {
         setIsLoading(true);
-        if (!params.projectId) setSpeakers([]);
+        if (!projectId) setSpeakers([]);
         try {
             if (limited) {
-                const response = await axios.get(import.meta.env.VITE_API_URL + `/speaker/project/${params.projectId}?order=DESC&limit=4`);
+                const response = await axios.get(import.meta.env.VITE_API_URL + `/speaker/project/${projectId}?order=DESC&limit=4`);
                 const data: ISpeaker[] = response.data.map((item: ISpeaker) => item);
                 setSpeakers(data);
             } else {
-                const response = await axios.get(import.meta.env.VITE_API_URL + `/speaker/project/${params.projectId}?order=DESC`);
+                const response = await axios.get(import.meta.env.VITE_API_URL + `/speaker/project/${projectId}?order=DESC`);
                 const data: ISpeaker[] = response.data.map((item: ISpeaker) => item);
                 setSpeakers(data);
             }
@@ -48,7 +47,7 @@ const SpeakersList = ({previous, canHide, limited, noAddButton}: SpeakersListPro
         } finally {
             setIsLoading(false);
         }
-    }, [params, limited]);
+    }, [limited, projectId]);
 
     useEffect(() => {
         fetchSpeakers();

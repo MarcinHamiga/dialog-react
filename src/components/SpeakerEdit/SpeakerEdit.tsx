@@ -7,7 +7,6 @@ import FormLinkButton from "../buttons/FormLinkButton.tsx";
 import FormButton from "../buttons/FormButton.tsx";
 
 interface SpeakerEditParams extends Record<string, string | undefined> {
-    projectId: string;
     speakerId: string,
 }
 
@@ -52,7 +51,7 @@ const SpeakerEdit = () => {
         }
         try {
             await axios.patch(import.meta.env.VITE_API_URL + '/speaker/' + speakerId, payload);
-            navigate(`/project/${params.projectId}/${previous === "dashboard" ? previous : (previous === "speaker" ? previous : "dashboard") }`);
+            navigate(`${previous === "speaker" ? "/speaker" : "/dashboard"}`);
         } catch (err) {
             if (axios.isAxiosError(err) ||  err instanceof Error) {
                 setSaveError(err);
@@ -111,8 +110,8 @@ const SpeakerEdit = () => {
                     className="flex flex-row gap-2 w-[80%] mx-auto mb-4"
                 >
                     <FormLinkButton
-                        to={searchParams.get("previous") === "dashboard" ? `/project/${params.projectId}/dashboard/` : `/project/${params.projectId}/speaker`}
-                        text={`Back to ${searchParams.get("previous") === "dashboard" ? "dashboard" : (searchParams.get("previous") === "speaker" ? "speakers" : "dashboard")}`}
+                        to={previous === "speaker" ? `/speaker` : `/dashboard`}
+                        text={`Back to ${previous === "speaker" ? "speaker" : "dashboard"}`}
                     />
                     <FormButton
                         type="submit"

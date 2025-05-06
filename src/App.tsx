@@ -6,7 +6,7 @@ import ProjectNew from "./components/ProjectNew/ProjectNew.tsx";
 import ProjectDashboard from "./components/ProjectDashboard/ProjectDashboard.tsx";
 import SpeakerNew from "./components/SpeakerNew/SpeakerNew.tsx";
 import SpeakerEdit from "./components/SpeakerEdit/SpeakerEdit.tsx";
-import SpeakersPanel from "./components/SpeakersPanel.tsx";
+import SpeakersPanel from "./components/SpeakersPanel/SpeakersPanel.tsx";
 
 function App() {
 
@@ -19,12 +19,12 @@ function App() {
             <Routes>
                 <Route path="/" element={<ProjectsList />} />
                 <Route path="/project" element={<ProjectsList/>}/>
-                <Route path="/project/:projectId" element={<ProjectEdit />}/>
+                <Route path="/project/edit/:projectId" element={<ProjectEdit />}/>
                 <Route path="/project/new" element={<ProjectNew/>}/>
-                <Route path="/project/:projectId/dashboard" element={<ProjectDashboard/>}/>
-                <Route path="/project/:projectId/speaker/new" element={<SpeakerNew />}/>
-                <Route path="/project/:projectId/speaker/edit/:speakerId" element={<SpeakerEdit />} />
-                <Route path="/project/:projectId/speaker" element={<SpeakersPanel />} />
+                <Route path="/dashboard" element={<ProjectDashboard/>}/>
+                <Route path="/speaker/new" element={<SpeakerNew />}/>
+                <Route path="/speaker/edit/:speakerId" element={<SpeakerEdit />} />
+                <Route path="/speaker" element={<SpeakersPanel />} />
             </Routes>
         </main>
     </>

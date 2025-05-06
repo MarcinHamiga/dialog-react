@@ -1,14 +1,14 @@
 import {useState} from "react";
-import {useNavigate, useParams, useSearchParams} from "react-router-dom";
-import {DashboardParams} from "../../interfaces/IDashboardParams.ts";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import axios from "axios";
 import FormInput from "../ProjectEdit/FormInput.tsx";
 import FormLinkButton from "../buttons/FormLinkButton.tsx";
 import FormButton from "../buttons/FormButton.tsx";
+import {useProject} from "../ProjectContext/ProjectContext.tsx";
 
 const SpeakerNew = () => {
     const navigate = useNavigate();
-    const params = useParams<DashboardParams>();
+    const { projectId } = useProject();
     const [searchParams] = useSearchParams();
     const [name, setName] = useState('');
 
@@ -16,12 +16,12 @@ const SpeakerNew = () => {
         e.preventDefault();
         const speaker = {
             name,
-            projectId: params.projectId,
+            projectId: projectId,
         }
         try {
             const response = await axios.post(import.meta.env.VITE_API_URL + '/speaker', speaker);
             console.log(response.data);
-            navigate(searchParams.get("previous") === "dashboard" ? `/project/${params.projectId}/dashboard/` : `/project/${params.projectId}/speaker`);
+            navigate(searchParams.get("previous") === "speaker" ? `/speaker` : `/dashboard`);
         } catch (err) {
             console.error(err);
         }
@@ -56,8 +56,8 @@ const SpeakerNew = () => {
                     className="flex flex-row gap-2 w-[80%] mx-auto mb-4"
                 >
                     <FormLinkButton
-                        to={searchParams.get("previous") === "dashboard" ? `/project/${params.projectId}/dashboard/` : `/project/${params.projectId}/speaker`}
-                        text={`Back to ${searchParams.get("previous") === "dashboard" ? "dashboard" : (searchParams.get("previous") === "speaker" ? "speakers" : "dashboard")}`}
+                        to={searchParams.get("previous") === "speaker" ? `/speaker` : `/dashboard`}
+                        text={`Back to ${searchParams.get("previous") === "speaker" ? `speakers` : `dashboard`}`}
                     />
                     <FormButton
                         type="submit"

@@ -1,7 +1,8 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useState} from "react";
 import axios from 'axios';
 import {getFullDate} from "../../utils.ts";
+import {useProject} from "../ProjectContext/ProjectContext.tsx";
 
 type ProjectCardProps = {
     projectId: string;
@@ -15,6 +16,8 @@ const ProjectCard = ({ projectId, projectName, projectDesc, updateDate, onDelete
     const [id] = useState(projectId);
     const lastEditDate = new Date(updateDate);
     const lastEditDateString = getFullDate(lastEditDate);
+    const { setProjectId } = useProject();
+    const navigate = useNavigate();
 
     async function removeProject(e: React.MouseEvent) {
         console.log(e);
@@ -26,6 +29,12 @@ const ProjectCard = ({ projectId, projectName, projectDesc, updateDate, onDelete
             console.log(err);
         }
     }
+
+    function chooseProject() {
+        setProjectId(projectId);
+        navigate('/dashboard');
+    }
+
     return (
         <div className="flex flex-col h-full min-h-64 bg-gray-800 rounded-lg shadow-md hover:scale-105 transition-all">
             <div className="flex-grow p-4">
@@ -35,10 +44,12 @@ const ProjectCard = ({ projectId, projectName, projectDesc, updateDate, onDelete
 
             <div className="p-4 flex flex-col gap-1 bg-gray-900">
                 <div>
-                    <Link
-                        to={`/project/${projectId}/dashboard`}
-                        className="block w-auto my-auto text-center bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded transition-colors">
-                        Start</Link>
+                    <button
+                        onClick={chooseProject}
+                        className="block w-full my-auto text-center bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded transition-colors"
+                    >
+                        Start
+                    </button>
                 </div>
                 <div className="flex flex-row gap-1">
                     <Link

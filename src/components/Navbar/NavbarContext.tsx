@@ -13,7 +13,7 @@ const NavbarContext = createContext<NavbarContextType>({
 export const useNavbar = () => useContext(NavbarContext);
 
 export const NavbarProvider = ({ children }: { children: React.ReactNode }) => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
 
     useEffect(() => {
         const saved = localStorage.getItem("navbarOpen") === "true";
