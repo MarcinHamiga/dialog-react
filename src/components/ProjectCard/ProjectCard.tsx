@@ -3,7 +3,15 @@ import {useState} from "react";
 import axios from 'axios';
 import {getFullDate} from "../../utils.ts";
 
-const ProjectCard = ({ projectId = "", projectName = "", projectDesc = "", updateDate = "", onDeleteSuccess }) => {
+type ProjectCardProps = {
+    projectId: string;
+    projectName: string;
+    projectDesc?: string;
+    updateDate: string;
+    onDeleteSuccess: () => void;
+}
+
+const ProjectCard = ({ projectId, projectName, projectDesc, updateDate, onDeleteSuccess }: ProjectCardProps) => {
     const [id] = useState(projectId);
     const lastEditDate = new Date(updateDate);
     const lastEditDateString = getFullDate(lastEditDate);
@@ -19,13 +27,13 @@ const ProjectCard = ({ projectId = "", projectName = "", projectDesc = "", updat
         }
     }
     return (
-        <div className="flex flex-col h-full bg-gray-800 rounded-lg shadow-md hover:scale-105 transition-all">
+        <div className="flex flex-col h-full min-h-64 bg-gray-800 rounded-lg shadow-md hover:scale-105 transition-all">
             <div className="flex-grow p-4">
-                <h2 className="text-2xl font-semibold text-violet-400 mb-2"><b>{projectName}</b></h2>
-                <p className="text-sm text-white">{projectDesc}</p>
+                <h2 className="text-2xl text-violet-500 font-semibold mb-2"><b>{projectName}</b></h2>
+                <p className="text-sm text-gray-300">{projectDesc}</p>
             </div>
 
-            <div className="p-4 pt-0 flex flex-col gap-1">
+            <div className="p-4 flex flex-col gap-1 bg-gray-900">
                 <div>
                     <Link
                         to={`/project/${projectId}/dashboard`}
@@ -50,7 +58,12 @@ const ProjectCard = ({ projectId = "", projectName = "", projectDesc = "", updat
                         Remove
                     </button>
                 </div>
-                <p className={"sm:text-small md:text-medium lg:text-medium xl:text-medium text-black pt-4"}>Last edited: {lastEditDateString}</p>
+            </div>
+            <div
+                className={"sm:text-small md:text-medium lg:text-medium xl:text-medium p-4 flex flex-row justify-between"}
+            >
+                <span className="text-gray-400 text-sm">Last edited: </span>
+                <span className="text-gray-200 text-sm">{lastEditDateString}</span>
             </div>
         </div>
     );

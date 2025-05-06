@@ -6,7 +6,14 @@ import { ISpeaker } from "../../interfaces/ISpeaker.ts";
 import SpeakerCard from "../SpeakerCard/SpeakerCard.tsx";
 import NewSpeakerCard from "../NewSpeakerCard/NewSpeakerCard.tsx";
 
-const SpeakersList = () => {
+type SpeakersListProps = {
+    previous: "dashboard" | "speaker";
+    canHide: boolean,
+    limited: boolean,
+    noAddButton: boolean
+}
+
+const SpeakersList = ({previous, canHide, limited, noAddButton}: SpeakersListProps) => {
     const params = useParams<DashboardParams>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<AxiosError | Error | null>(null);
@@ -17,9 +24,16 @@ const SpeakersList = () => {
         setIsLoading(true);
         if (!params.projectId) setSpeakers([]);
         try {
-            const response = await axios.get(import.meta.env.VITE_API_URL + `/speaker/project/${params.projectId}`);
-            const data: ISpeaker[] = response.data.map((item: ISpeaker) => item);
-            setSpeakers(data);
+            if (limited) {
+                const response = await axios.get(import.meta.env.VITE_API_URL + `/speaker/project/${params.projectId}?order=DESC&limit=4`);
+                const data: ISpeaker[] = response.data.map((item: ISpeaker) => item);
+                setSpeakers(data);
+            } else {
+                const response = await axios.get(import.meta.env.VITE_API_URL + `/speaker/project/${params.projectId}?order=DESC`);
+                const data: ISpeaker[] = response.data.map((item: ISpeaker) => item);
+                setSpeakers(data);
+            }
+
         } catch (err) {
             if (isAxiosError(err)) {
                 console.error(err);
@@ -34,7 +48,7 @@ const SpeakersList = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [params]);
+    }, [params, limited]);
 
     useEffect(() => {
         fetchSpeakers();
@@ -55,13 +69,13 @@ const SpeakersList = () => {
                     </h2>
                     <div className="flex flex-row gap-2">
                         <button
-                            className={"bg-violet-500 hover:bg-violet-600 cursor-pointer transition-all w-32 h-auto text-white shadow-md rounded-xl"}
+                            className={"bg-violet-500 hover:bg-violet-600 cursor-pointer transition-all w-32 h-auto text-white shadow-md rounded-xl hover:shadow-lg"}
                             onClick={fetchSpeakers}
                         >
                             Refresh
                         </button>
                         <button
-                            className="bg-violet-500 hover:bg-violet-600 cursor-pointer transition-all w-32 h-auto text-white shadow-md rounded-xl"
+                            className={`bg-violet-500 hover:bg-violet-600 cursor-pointer transition-all w-32 h-auto text-white shadow-md rounded-xl ${canHide ? "" : "hidden"} hover:shadow-lg`}
                             onClick={changeSpeakersVisibility}
                         >
                             {speakersHidden ? "Show" : "Hide"}
@@ -92,7 +106,7 @@ const SpeakersList = () => {
                             <p className="text-xl mb-4">No speakers found for this project</p>
                             <p>Create your first speaker to get started</p>
                         </div>
-                        <NewSpeakerCard previousPage="dashboard"/>
+                        <NewSpeakerCard previousPage={previous}/>
                     </div>
 
                 ) : (
@@ -105,6 +119,7 @@ const SpeakersList = () => {
                             }
                         `}
                     >
+                        {!noAddButton && (<NewSpeakerCard previousPage={previous}/>)}
                         {speakers.map((speaker: ISpeaker) => (
                             <SpeakerCard
                                 key={speaker.id}
@@ -114,11 +129,10 @@ const SpeakersList = () => {
                                 createdAt={speaker.createdAt}
                                 updatedAt={speaker.updatedAt}
                                 onDeleteSuccess={fetchSpeakers}
+                                previous={previous}
                             />
                         ))}
-                        <NewSpeakerCard previousPage="dashboard"/>
                     </div>
-
                 )}
             </div>
         </section>

@@ -1,7 +1,50 @@
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import logoUrl from '../../assets/menu_48dp_E3E3E3_FILL0_wght400_GRAD0_opsz48.svg';
+import {useEffect, useState} from "react";
+import {DashboardParams} from "../../interfaces/IDashboardParams.ts";
+import axios from "axios";
+import {useNavbar} from "./NavbarContext.tsx";
 
-const Navbar = ({projectId, isOpen, toggle, projectTitle}) => {
+const Navbar = () => {
+    const params = useParams<DashboardParams>();
+    const [projectTitle, setProjectTitle] = useState<string>('');
+    const projectId = params.projectId as string;
+    const {isOpen, toggle} = useNavbar();
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        const fetchProjectTitle = async () => {
+            setIsLoading(true);
+            try {
+                const response = await axios.get(import.meta.env.VITE_API_URL +  '/project/' + params.projectId);
+                console.log(response.data);
+                setProjectTitle(response?.data.name);
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+
+        fetchProjectTitle();
+    }, [params.projectId]);
+    if (isLoading) {
+        return (
+            <div
+                className={`
+                bg-gray-900 text-white h-full
+                flex flex-col transition-all duration-300 ease-in-out
+                flex-shrink-0
+                ${isOpen ? 'w-64' : 'w-24'}
+            `}
+            >
+                <div className="flex justify-center items-center h-64">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-violet-500"></div>
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div
             className={`
@@ -37,6 +80,7 @@ const Navbar = ({projectId, isOpen, toggle, projectTitle}) => {
             </div>
             <nav className="flex-grow px-4 pb-4 overflow-hidden">
                 <ul className="space-y-3">
+                    <NavItem isOpen={isOpen} to={`/project/${projectId}/dashboard`} label={"Dashboard"} icon={"📋"} />
                     <NavItem isOpen={isOpen} to={`/project/${projectId}/speaker`} label="Speakers" icon="👤" />
                     <NavItem isOpen={isOpen} to={`/project/${projectId}/dialoguetree`} label="Dialogue trees" icon="🌳" />
                     <NavItem isOpen={isOpen} to={'/project'} label="Exit to project list" icon="🗃️" />
@@ -47,7 +91,7 @@ const Navbar = ({projectId, isOpen, toggle, projectTitle}) => {
 }
 
 // Extracted reusable component for nav items
-const NavItem = ({ isOpen, to, label, icon }) => (
+const NavItem = ({ isOpen = false, to = "", label = "", icon = "" }) => (
     <li className="transform transition-all duration-300 ease-in-out">
         <Link
             to={to}

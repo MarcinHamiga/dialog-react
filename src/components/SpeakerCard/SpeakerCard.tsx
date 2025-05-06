@@ -5,7 +5,7 @@ import {DashboardParams} from "../../interfaces/IDashboardParams.ts";
 import {getFullDate} from "../../utils.ts";
 import axios from "axios";
 
-const SpeakerCard = ({ id="", name="", image="", createdAt="", updatedAt="new Date()", onDeleteSuccess }) => {
+const SpeakerCard = ({ id="", name="", image="", createdAt="", updatedAt="new Date()", onDeleteSuccess = () => {}, previous="dashboard" }) => {
     const params = useParams<DashboardParams>();
     const [characterName] = useState<string>(name);
     const [imageUrl] = useState<string>(image);
@@ -25,7 +25,7 @@ const SpeakerCard = ({ id="", name="", image="", createdAt="", updatedAt="new Da
     return (
         <div
             id={`card-${id}`}
-            className="bg-gray-800 rounded-lg shadow-md w-full overflow-hidden transition-transform hover:scale-105 min-h-56"
+            className="bg-gray-800 rounded-lg shadow-md w-full overflow-hidden transition-transform hover:scale-105 hover:shadow-xl min-h-64"
         >
             <div className="flex flex-col gap-2">
                 <div className="flex flex-row p-2">
@@ -41,7 +41,7 @@ const SpeakerCard = ({ id="", name="", image="", createdAt="", updatedAt="new Da
                 </div>
                 <div className="flex p-3 gap-2 bg-gray-900">
                     <Link
-                        to={`/project/${params.projectId}/speaker/edit/${id}`}
+                        to={`/project/${params.projectId}/speaker/edit/${id}?previous=${previous}`}
                         className="bg-violet-600 hover:bg-violet-700 text-white rounded py-2 px-4 flex-1 text-center font-medium transition-colors"
                     >
                         Edit

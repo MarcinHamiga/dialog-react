@@ -1,7 +1,10 @@
 import {useState} from "react";
-import {Link, useNavigate, useParams, useSearchParams} from "react-router-dom";
+import {useNavigate, useParams, useSearchParams} from "react-router-dom";
 import {DashboardParams} from "../../interfaces/IDashboardParams.ts";
 import axios from "axios";
+import FormInput from "../ProjectEdit/FormInput.tsx";
+import FormLinkButton from "../buttons/FormLinkButton.tsx";
+import FormButton from "../buttons/FormButton.tsx";
 
 const SpeakerNew = () => {
     const navigate = useNavigate();
@@ -40,36 +43,26 @@ const SpeakerNew = () => {
                     >
                         {name ? name : "Unnamed character"}
                     </h1>
-                    <label
-                        htmlFor="speakername"
-                        className="text-xl text-white font-semibold text-left mb-4 w-[80%] mx-auto"
-                    >
-                        Speaker name
-                    </label>
-                    <input
+                    <FormInput
+                        label="Speaker name"
                         id="speakername"
                         name="speakername"
                         value={name}
-                        onChange={(event) => setName(event.target.value)}
-                        className={`w-[80%] mx-auto p-2 mb-2 rounded-lg shadow-md bg-gray-900 text-white`}
+                        onChangeTarget={setName}
                         required
                     />
                 </div>
                 <div
                     className="flex flex-row gap-2 w-[80%] mx-auto mb-4"
                 >
-                    <Link
+                    <FormLinkButton
                         to={searchParams.get("previous") === "dashboard" ? `/project/${params.projectId}/dashboard/` : `/project/${params.projectId}/speaker`}
-                        className="bg-violet-500 hover:bg-violet-600 cursor-pointer w-full text-center p-4 text-white text-xl transition-colors duration-100 rounded-xl shadow-md"
-                    >
-                        Back to {searchParams.get("previous") === "dashboard" ? "dashboard" : (searchParams.get("previous") === "speaker" ? "speakers" : "dashboard")}
-                    </Link>
-                    <button
-                        className="bg-violet-500 hover:bg-violet-600 cursor-pointer w-full text-center p-4 text-white text-xl transition-colors duration-100 rounded-xl shadow-md"
+                        text={`Back to ${searchParams.get("previous") === "dashboard" ? "dashboard" : (searchParams.get("previous") === "speaker" ? "speakers" : "dashboard")}`}
+                    />
+                    <FormButton
                         type="submit"
-                    >
-                        Create
-                    </button>
+                        text="Create speaker"
+                    />
                 </div>
             </form>
         </div>

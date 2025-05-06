@@ -5,7 +5,7 @@ import ProjectCard from "../ProjectCard/ProjectCard.tsx";
 import {IProject} from "../../interfaces/IProject.ts";
 import NewProjectCard from "../NewProjectCard/NewProjectCard.tsx";
 
-const ProjectsScreen = () => {
+const ProjectsList = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [projects, setProjects] = useState<IProject[]>([]);
     const [error, setError] = useState<Error | AxiosError | null>(null);
@@ -64,7 +64,10 @@ const ProjectsScreen = () => {
 
     return (
         <div className="container mx-auto px-4 py-8 min-w-[80%] h-full">
-            <h1 className="text-5xl font-bold mb-6 text-violet-800">Projects</h1>
+            <h1 className="text-violet-500 text-5xl font-semibold mb-2">Projects</h1>
+            <hr
+                className="mb-4 border-1 w-full"
+            />
             {projectsArray.length === 0 ? (
                 <p className="text-center text-gray-600 py-8">No projects found.</p>
             ) : (
@@ -86,4 +89,4 @@ const ProjectsScreen = () => {
     );
 }
 
-export default ProjectsScreen;
+export default ProjectsList;
