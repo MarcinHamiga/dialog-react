@@ -1,4 +1,4 @@
-import '../../App.css';
+
 import {useCallback, useEffect, useState} from "react";
 import axios, { AxiosError } from 'axios';
 import ProjectCard from "../ProjectCard/ProjectCard.tsx";

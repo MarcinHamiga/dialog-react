@@ -1,18 +1,12 @@
 import {Link} from "react-router-dom";
-import "../../App.css";
 import {useState} from "react";
 import axios from 'axios';
+import {getFullDate} from "../../utils.ts";
 
 const ProjectCard = ({ projectId = "", projectName = "", projectDesc = "", updateDate = "", onDeleteSuccess }) => {
     const [id] = useState(projectId);
     const lastEditDate = new Date(updateDate);
-    const day =  String(lastEditDate.getDate()).padStart(2, "0");
-    const month =  String(lastEditDate.getMonth() + 1).padStart(2, "0");
-    const year =  String(lastEditDate.getFullYear()).padStart(4, "0");
-    const hours = String(lastEditDate.getHours()).padStart(2, "0");
-    const minutes = String(lastEditDate.getMinutes()).padStart(2, "0");
-    const seconds = String(lastEditDate.getSeconds()).padStart(2, "0");
-    const lastEditDateString = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+    const lastEditDateString = getFullDate(lastEditDate);
 
     async function removeProject(e: React.MouseEvent) {
         console.log(e);
@@ -25,7 +19,7 @@ const ProjectCard = ({ projectId = "", projectName = "", projectDesc = "", updat
         }
     }
     return (
-        <div className="flex flex-col h-full bg-gray-600 rounded-lg shadow-md">
+        <div className="flex flex-col h-full bg-gray-800 rounded-lg shadow-md hover:scale-105 transition-all">
             <div className="flex-grow p-4">
                 <h2 className="text-2xl font-semibold text-violet-400 mb-2"><b>{projectName}</b></h2>
                 <p className="text-sm text-white">{projectDesc}</p>
@@ -46,13 +40,17 @@ const ProjectCard = ({ projectId = "", projectName = "", projectDesc = "", updat
                         Edit
                     </Link>
                     <button
-                        onClick={(event) => removeProject(event)}
+                        onClick={(event) => {
+                            if (window.confirm("Are you sure you want to delete this project?")) {
+                                removeProject(event);
+                            }
+                        }}
                         className="block w-full my-auto text-center bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded transition-colors cursor-pointer"
                     >
                         Remove
                     </button>
                 </div>
-                <p className={"sm:text-small md:text-medium lg:text-large xl:text-large text-gray-800 pt-4"}>Last edited: {lastEditDateString}</p>
+                <p className={"sm:text-small md:text-medium lg:text-medium xl:text-medium text-black pt-4"}>Last edited: {lastEditDateString}</p>
             </div>
         </div>
     );
