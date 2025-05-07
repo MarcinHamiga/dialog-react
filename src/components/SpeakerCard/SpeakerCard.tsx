@@ -1,12 +1,10 @@
 import {useState} from "react";
 import defaultPhoto from "../../assets/icon-7797704_640.png";
-import {Link, useParams} from "react-router-dom";
-import {DashboardParams} from "../../interfaces/IDashboardParams.ts";
+import {Link} from "react-router-dom";
 import {getFullDate} from "../../utils.ts";
 import axios from "axios";
 
 const SpeakerCard = ({ id="", name="", image="", createdAt="", updatedAt="new Date()", onDeleteSuccess = () => {}, previous="dashboard" }) => {
-    const params = useParams<DashboardParams>();
     const [characterName] = useState<string>(name);
     const [imageUrl] = useState<string>(image);
     const [createDate] = useState<Date>(createdAt ?  new Date(createdAt) : new Date());
@@ -41,7 +39,7 @@ const SpeakerCard = ({ id="", name="", image="", createdAt="", updatedAt="new Da
                 </div>
                 <div className="flex p-3 gap-2 bg-gray-900">
                     <Link
-                        to={`/project/${params.projectId}/speaker/edit/${id}?previous=${previous}`}
+                        to={`/speaker/edit/${id}?previous=${previous}`}
                         className="bg-violet-600 hover:bg-violet-700 text-white rounded py-2 px-4 flex-1 text-center font-medium transition-colors"
                     >
                         Edit

@@ -25,8 +25,9 @@ const ProjectDashboard =  () => {
             <SpeakersList
                 previous={"dashboard"}
                 canHide={true}
-                limited={true}
                 noAddButton={true}
+                paginate={false}
+                limit={4}
             />
         </div>
     )

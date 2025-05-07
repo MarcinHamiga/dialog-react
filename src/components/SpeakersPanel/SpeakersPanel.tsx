@@ -15,7 +15,7 @@ const SpeakersPanel = () => {
         } else {
             setIsLoading(false);
         }
-    })
+    }, [projectId, navigate])
 
     if (isLoading) return (<> </>)
     return (
@@ -24,7 +24,8 @@ const SpeakersPanel = () => {
             <SpeakersList
                 previous={'speaker'}
                 canHide={false}
-                limited={false}
+                paginate={true}
+                limit={11}
                 noAddButton={false}
             />
         </div>
