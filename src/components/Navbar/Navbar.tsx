@@ -29,7 +29,7 @@ const Navbar = () => {
                 </h2>
                 <button
                     onClick={toggle}
-                    className="p-2 rounded-md bg-violet-500 hover:bg-violet-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white w-12 h-12 transition-all duration-200"
+                    className="p-2 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white w-12 h-12 transition-all duration-200 cursor-pointer"
                     aria-label={isOpen ? 'Hide Menu'  : 'Show Menu'}
                     aria-expanded={isOpen}
                 >

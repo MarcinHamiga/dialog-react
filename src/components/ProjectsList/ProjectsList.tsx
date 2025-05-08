@@ -69,12 +69,17 @@ const ProjectsList = () => {
                 className="mb-4 border-1 w-full"
             />
             {projectsArray.length === 0 ? (
-                <p className="text-center text-gray-600 py-8">No projects found.</p>
+                <div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6">
+                        <NewProjectCard/>
+                    </div>
+                    <p className="text-center text-gray-600 py-8">No projects found.</p>
+                </div>
+
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6">
                     {projectsArray.map((project: IProject) => (
                         <ProjectCard
-                            key={project.id}
                             projectId={project.id}
                             projectName={project.name}
                             projectDesc={project.description}

@@ -19,7 +19,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<ProjectsList />} />
                 <Route path="/project" element={<ProjectsList/>}/>
-                <Route path="/project/edit/:projectId" element={<ProjectEdit />}/>
+                <Route path="/project/:projectId" element={<ProjectEdit />}/>
                 <Route path="/project/new" element={<ProjectNew/>}/>
                 <Route path="/dashboard" element={<ProjectDashboard/>}/>
                 <Route path="/speaker/new" element={<SpeakerNew />}/>

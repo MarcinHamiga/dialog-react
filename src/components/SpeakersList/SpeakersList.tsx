@@ -121,11 +121,11 @@ const SpeakersList = ({previous, canHide, noAddButton, paginate=false, limit=11}
                         }
                         `}
                     >
+                        {!noAddButton ? (<NewSpeakerCard previousPage={previous}/>) : ("")}
                         <div className="text-center py-16 text-gray-400">
-                            <p className="text-xl mb-4">No speakers found for this project</p>
+                            <p className="text-xl mb-4 col-span-1 sm:col-span-1 lg:col-span-2 xl:col-span-3">No speakers found for this project</p>
                             <p>Create your first speaker to get started</p>
                         </div>
-                        <NewSpeakerCard previousPage={previous}/>
                     </div>
 
                 ) : (
